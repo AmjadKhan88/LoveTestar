@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+
+    <div class="love-form-container">
+        <h2>Love Testing Form</h2>
+        <form id="loveForm">
+            <div class="form-group">
+                <label for="yourName">Your Name:</label>
+                <input type="text" id="yourName" name="yourName" required>
+            </div>
+            <div class="form-group">
+                <label for="partnerName">Partner's Name:</label>
+                <input type="text" id="partnerName" name="partnerName" required>
+            </div>
+            <button type="submit" id="submit">Test Love</button>
+        </form>
+    </div>
+
+    <div id="resultContainer" class="result-container"><span>LOVE</span>
+        <h3>87</h3>
+    </div>
+    <div class="resultstatus"><span>Status</span>
+        <h3>all the best</h3>
+    </div>
+
+
+
+    <script src="jquery-3.7.1.min.js"></script>
+    <script>
+
+        $('#submit').on('click', function (e) {
+           e.preventDefault();
+
+            const name = $('#yourName').val();
+            const patner = $('#partnerName').val();
+
+            const settings = {
+                async: true,
+                crossDomain: true,
+                url: 'https://love-calculator.p.rapidapi.com/getPercentage?sname=' + name + '&fname=' + patner,
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': '9cb1406057msh95164b68305f28dp123173jsnd4848daedb61',
+                    'X-RapidAPI-Host': 'love-calculator.p.rapidapi.com'
+                }
+            };
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+                const loveScore = response.percentage;
+                const result = response.result;
+                let score = 0;
+
+                intervalId= setInterval(() => {
+                    if (score <= loveScore) {
+          $('#resultContainer h3').text('Love Score: ' + score);
+          $('#resultContainer h3').css({
+            "box-shadow": "0px 0px 5px 6px orange",
+            "transform": "scale(1.2)"
+          })
+          score++;
+        } else {
+          clearInterval(intervalId); // Clear the interval when the condition is met
+          $('#resultContainer h3').text('Love Score: ' + score);
+          $('.resultstatus h3').text(result);
+          $('#resultContainer h3').css({
+            "box-shadow": "0px 0px 5px 10px black",
+            "transform": "scale(1)"
+          })
+        }
+
+                }, 10);
+             
+
+             
+
+            });
+        });
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
